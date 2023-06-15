@@ -1,0 +1,38 @@
+#include <stdio.h>
+struct alumnos{
+    unsigned char nombre[30];
+    unsigned char apellido[30];
+    int edad;
+    unsigned char curso[7];
+    unsigned char grupo_sang [3];
+};
+int main(void){
+    int alum=0;
+    printf("Hola, ingrese la cantidad de alumnos que desea guardar datos ");
+    scanf("%d", &alum);
+    struct alumnos alumno[alum];
+    for (int j=0;j<alum;j++){
+        printf("ingrese el nombre del alumno %d: ", j+1);
+        scanf("%s",alumno[j].nombre);
+        printf("ingrese el apellido del alumno %d: ", j+1);
+        scanf("%s",alumno[j].apellido);
+        printf("ingrese la edad del alumno %d: ", j+1);
+        scanf("%d",&alumno[j].edad);
+        printf("ingrese el curso del alumno %d: ", j+1);
+        scanf("%s",alumno[j].curso);
+        printf("ingrese el grupo sanguineo del alumno %d: ", j+1);
+        scanf("%s",alumno[j].grupo_sang);
+    }
+    printf("A continuación se mostraran los datos: \n");
+   
+    for (int j=0;j<alum;j++){
+        printf("nombre %d: %s\n", j+1, alumno[j].nombre);
+        printf("apellido %d: %s\n", j+1, alumno[j].apellido);
+        printf("edad %d: %d \n", j+1, alumno[j].edad);
+        printf("curso %d: %s\n", j+1, alumno[j].curso);
+        printf("grupo sanguineo %d: %s \n", j+1, alumno[j].grupo_sang);
+    }
+    return 0;
+}
+
+
