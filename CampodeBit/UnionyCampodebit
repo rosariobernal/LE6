@@ -1,0 +1,42 @@
+#include <stdio.h>
+#define ENum 8 //(Es la cantidad de bits del exponente)
+#define MNum 23//(Es la cantidad de bits de la mantisa)
+union{
+    struct{
+        unsigned int mant:23;
+        unsigned int expo:8;
+        unsigned int signo:1;
+    };
+    float flot;
+}flotante;
+
+void PasarDeciBina(int valor, int tam);
+
+int main (){
+    int expo=8; 
+    int mant=23;
+    int signo=1;
+    printf("Bienvenido, ingrese el valor de flotante que desee ver:\n");
+    scanf("%f", &flotante.flot);
+    printf("Bit de signo: %d\n", flotante.signo);
+    printf("Exponente: ");
+    PasarDeciBina(flotante.expo,ENum);
+    printf("Mantisa: ");
+    PasarDeciBina(flotante.mant,MNum);
+    return 0;
+    
+}
+void PasarDeciBina(int valor, int tam){ //Estructura que se encarga de desplazar bit a bit e imprimirlos
+    int a, b;
+	for (a=tam;a>=0;a--){
+		b = valor>>a;
+		if (b&1){
+			printf("1");
+		}else {
+			printf("0");
+		}
+	}	
+	printf("\n");	
+}
+
+
