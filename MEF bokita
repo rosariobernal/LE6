@@ -1,119 +1,112 @@
 #define debounceTime 40
 typedef enum {
-  BUTTON_UP, 
-  BUTTON_FALLING, 
-  BUTTON_DOWN, 
-  BUTTON_RAISING, 
-} debounceState_t; 
+    BUTTON_UP, 
+    BUTTON_FALLING, 
+    BUTTON_DOWN, 
+    BUTTON_RAISING, 
+}debounceState_t; 
 
 const int buttonPin = 8;         
 const int ledPin1 = 12;           
 const int ledPin2 = 13;            
 const byte Display[16]{
-  B10000001,  //0
-  B11110011,  //1
-  B01001001,  //2
-  B01100001,  //3
-  B00110011,  //4
-  B00100101,  //5
-  B00000101,  //6
-  B11110001,  //7
-  B00000001,  //8
-  B00100001,  //9
-  B00010001,  //A
-  B00000111,  //b
-  B10001101,  //C
-  B01000011,  //d
-  B00001101,  //E
-  B00011101}; //F
+    B10000001,  //0
+    B11110011,  //1
+    B01001001,  //2
+    B01100001,  //3
+    B00110011,  //4
+    B00100101,  //5
+    B00000101,  //6
+    B11110001,  //7
+    B00000001,  //8
+    B00100001,  //9
+    B00010001,  //A
+    B00000111,  //b
+    B10001101,  //C
+    B01000011,  //d
+    B00001101,  //E
+    B00011101}; //F
 
 uint8_t CONTADOR=0;
 unsigned long Tiempo_Ahora = 0;
 debounceState_t debounceState; 
 
 void debounceFSM_init(); 
-
 void debounceFSM_update();
-
 void button_pressed();
-
 void button_released();
-
 void setup(){
 
-  DDRD=B11111111;
-  pinMode(8, INPUT);
-  pinMode(12, OUTPUT);
-  pinMode(13, OUTPUT);
-  Tiempo_Ahora = millis();
-  debounceFSM_init();
-  PORTD= Display[0]; //valor inicial
+    DDRD=B11111111;
+    pinMode(8, INPUT);
+    pinMode(12, OUTPUT);
+    pinMode(13, OUTPUT);
+    Tiempo_Ahora = millis();
+    debounceFSM_init();
+    PORTD= Display[0]; //valor inicial
 
 }
 
 void loop(){
-
-  debounceFSM_update();
-
+    debounceFSM_update();
 }
 
 void debounceFSM_init(){
     debounceState = BUTTON_UP;
-
 }
 
 void button_released(){
-  digitalWrite(12, HIGH);
-  digitalWrite(13, LOW);
-  }
+    digitalWrite(12, HIGH);
+    digitalWrite(13, LOW);
+}
 
 
 void button_pressed(){
-  digitalWrite(12, LOW);
-  digitalWrite(13, HIGH);
-  if(CONTADOR>16){
-    CONTADOR=0;
-  }
-  	else CONTADOR++;
+    digitalWrite(12, LOW);
+    digitalWrite(13, HIGH);
+    if(CONTADOR>16){
+        CONTADOR=0;
+    }else CONTADOR++;
+
     PORTD= Display[CONTADOR];
 } 
 
 void debounceFSM_update(){
-  switch(debounceState){
-     case BUTTON_UP:
+    switch(debounceState){
+        case BUTTON_UP:
         if(digitalRead(buttonPin==HIGH)){
-          debounceState = BUTTON_FALLING;
+            debounceState = BUTTON_FALLING;
         }
-      break;
+        break;
            
-     case BUTTON_FALLING:
-      if(millis()- Tiempo_Ahora>debounceTime){
-        Tiempo_Ahora = millis();
-        if(digitalRead(buttonPin)==HIGH){
-          debounceState = BUTTON_DOWN;
-          button_pressed();
-        }else{
-          debounceState = BUTTON_UP;
-        }
-      }
-      break;
+        case BUTTON_FALLING:
+            if(millis()- Tiempo_Ahora>debounceTime){
+                Tiempo_Ahora = millis();
+                if(digitalRead(buttonPin)==HIGH){
+                     debounceState = BUTTON_DOWN;
+                     button_pressed();
+                }else{
+                debounceState = BUTTON_UP;
+                }
+            }
+            break;
 
-    case BUTTON_DOWN:
-      if(digitalRead(buttonPin)==LOW){
-        debounceState = BUTTON_RAISING;
-      }
-      break;
+         case BUTTON_DOWN:
+         if(digitalRead(buttonPin)==LOW){
+             debounceState = BUTTON_RAISING;
+         }
+         break;
 
-    case BUTTON_RAISING:
-     if(millis()- Tiempo_Ahora>debounceTime){
-       Tiempo_Ahora = millis();
-       if(digitalRead(buttonPin)==LOW){
-         debounceState = BUTTON_UP;
-         button_released();
-       }else{
-         debounceState = BUTTON_DOWN;
-       }
-     }
-     break;
+         case BUTTON_RAISING:
+         if(millis()- Tiempo_Ahora>debounceTime){
+             Tiempo_Ahora = millis();
+             if(digitalRead(buttonPin)==LOW){
+                 debounceState = BUTTON_UP;
+                 button_released();
+             }else{
+             debounceState = BUTTON_DOWN;
+             }
+         }
+         break;
   }
 }
