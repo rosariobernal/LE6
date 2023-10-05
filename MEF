@@ -27,7 +27,7 @@ const byte Display[16]{
   B00001101,  //E
   B00011101}; //F
 
-uint8_t CONTADOR=0;
+unsigned char CONTADOR=0;
 unsigned long Tiempo_Ahora = 0;
 debounceState_t debounceState; 
 
